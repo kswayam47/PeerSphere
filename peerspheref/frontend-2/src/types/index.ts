@@ -11,6 +11,7 @@ export interface User {
   role?: 'user' | 'admin' | 'verified';
   followers?: string[];
   following?: string[];
+  isVerified?: boolean;
   createdAt: string;
   updatedAt: string;
 }

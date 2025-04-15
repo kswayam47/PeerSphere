@@ -11,6 +11,13 @@ export interface IUser extends Document {
   questionsAsked: number;
   answersGiven: number;
   reputation: number;
+  isVerified: boolean;
+  verificationToken: string | null;
+  verificationTokenExpires: Date | null;
+  resetPasswordToken: string | null;
+  resetPasswordExpires: Date | null;
+  otp: string | null;
+  otpExpires: Date | null;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -39,6 +46,34 @@ const userSchema = new mongoose.Schema<IUser, IUserModel>({
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters long'],
     select: false // Don't return password in queries by default
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verificationToken: {
+    type: String,
+    default: null
+  },
+  verificationTokenExpires: {
+    type: Date,
+    default: null
+  },
+  resetPasswordToken: {
+    type: String,
+    default: null
+  },
+  resetPasswordExpires: {
+    type: Date,
+    default: null
+  },
+  otp: {
+    type: String,
+    default: null
+  },
+  otpExpires: {
+    type: Date,
+    default: null
   },
   followers: [{
     type: mongoose.Schema.Types.ObjectId,

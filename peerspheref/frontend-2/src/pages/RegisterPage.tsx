@@ -28,7 +28,8 @@ const RegisterPage = () => {
     setLoading(true);
     try {
       await signUp(formData.email, formData.password, formData.username);
-      navigate('/');
+      // Redirect to the OTP verification page with the email
+      navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to register');
     } finally {

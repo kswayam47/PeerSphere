@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types';
 import api from '../services/api';
+import axios from 'axios';
 
 interface AuthContextType {
   user: User | null;
@@ -10,6 +11,9 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   updateProfile: (data: Partial<User>) => Promise<void>;
+  resendVerificationEmail: (email: string) => Promise<any>;
+  forgotPassword: (email: string) => Promise<any>;
+  resetPassword: (token: string, newPassword: string) => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -91,6 +95,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const resendVerificationEmail = async (email: string) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/resend-verification',
+        { email }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error resending verification email:', error);
+      throw error;
+    }
+  };
+
+  const forgotPassword = async (email: string) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/forgot-password',
+        { email }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error requesting password reset:', error);
+      throw error;
+    }
+  };
+
+  const resetPassword = async (token: string, newPassword: string) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/reset-password',
+        { token, newPassword }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      throw error;
+    }
+  };
+
   const value = {
     user,
     token,
@@ -98,7 +141,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signUp,
     signIn,
     signOut,
-    updateProfile
+    updateProfile,
+    resendVerificationEmail,
+    forgotPassword,
+    resetPassword
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

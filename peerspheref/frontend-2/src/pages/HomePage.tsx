@@ -15,8 +15,8 @@ interface Question {
     username: string;
   };
   createdAt: string;
-  upvotes: number;
-  downvotes: number;
+  upvotes: string[];
+  downvotes: string[];
   answers: any[];
   tags: string[];
 }
@@ -254,7 +254,9 @@ const HomePage: React.FC = () => {
       )}
 
       {questions.length === 0 ? (
-        <p className="text-gray-600">No questions yet. Be the first to ask!</p>
+        <div className="bg-white rounded-lg shadow-md p-6 text-center">
+          <p className="text-gray-500">No questions found. Be the first to ask!</p>
+        </div>
       ) : (
         <div className="space-y-4">
           {questions.map((question) => (

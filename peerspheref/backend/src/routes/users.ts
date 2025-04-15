@@ -7,7 +7,22 @@ import Answer from '../models/Answer';
 
 const router = express.Router();
 
-// All routes are protected
+// Get leaderboard - This route is public
+router.get('/leaderboard', async (req, res) => {
+  try {
+    const users = await User.find()
+      .select('username questionsAsked answersGiven reputation')
+      .sort({ reputation: -1, questionsAsked: -1, answersGiven: -1 })
+      .limit(10);
+
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+    res.status(500).json({ message: 'Error fetching leaderboard' });
+  }
+});
+
+// All routes below are protected
 router.use(protect);
 
 router.get('/profile', getUserProfile);
@@ -166,20 +181,6 @@ router.post('/:id/unfollow', protect, async (req: any, res) => {
     res.json({ message: 'Successfully unfollowed user' });
   } catch (error) {
     res.status(500).json({ message: 'Error unfollowing user' });
-  }
-});
-
-// Get leaderboard
-router.get('/leaderboard', async (req, res) => {
-  try {
-    const users = await User.find()
-      .select('username questionsAsked answersGiven reputation')
-      .sort({ reputation: -1, questionsAsked: -1, answersGiven: -1 })
-      .limit(10);
-
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching leaderboard' });
   }
 });
 

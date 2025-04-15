@@ -84,16 +84,23 @@ router.get('/:id', async (req, res) => {
       .populate('author', 'username')
       .populate({
         path: 'answers',
-        populate: {
-          path: 'author',
-          select: 'username'
-        }
+        populate: [
+          {
+            path: 'author',
+            select: 'username'
+          },
+          {
+            path: 'comments.author',
+            select: 'username'
+          }
+        ]
       });
     if (!question) {
       return res.status(404).json({ message: 'Question not found' });
     }
     res.json(question);
   } catch (error) {
+    console.error('Error fetching question:', error);
     res.status(500).json({ message: 'Error fetching question' });
   }
 });
@@ -106,7 +113,16 @@ router.post('/:id/upvote', protect, async (req: any, res) => {
       return res.status(404).json({ message: 'Question not found' });
     }
 
-    question.upvotes += 1;
+    // Check if user already upvoted
+    if (question.upvotes.includes(req.user._id)) {
+      return res.status(400).json({ message: 'You have already upvoted this question' });
+    }
+
+    // Remove from downvotes if exists
+    question.downvotes = question.downvotes.filter(id => id.toString() !== req.user._id.toString());
+    
+    // Add to upvotes
+    question.upvotes.push(req.user._id);
     await question.save();
 
     // Update author's reputation
@@ -116,6 +132,7 @@ router.post('/:id/upvote', protect, async (req: any, res) => {
 
     res.json(question);
   } catch (error) {
+    console.error('Error upvoting question:', error);
     res.status(500).json({ message: 'Error upvoting question' });
   }
 });
@@ -128,7 +145,16 @@ router.post('/:id/downvote', protect, async (req: any, res) => {
       return res.status(404).json({ message: 'Question not found' });
     }
 
-    question.downvotes += 1;
+    // Check if user already downvoted
+    if (question.downvotes.includes(req.user._id)) {
+      return res.status(400).json({ message: 'You have already downvoted this question' });
+    }
+
+    // Remove from upvotes if exists
+    question.upvotes = question.upvotes.filter(id => id.toString() !== req.user._id.toString());
+    
+    // Add to downvotes
+    question.downvotes.push(req.user._id);
     await question.save();
 
     // Update author's reputation
@@ -138,6 +164,7 @@ router.post('/:id/downvote', protect, async (req: any, res) => {
 
     res.json(question);
   } catch (error) {
+    console.error('Error downvoting question:', error);
     res.status(500).json({ message: 'Error downvoting question' });
   }
 });

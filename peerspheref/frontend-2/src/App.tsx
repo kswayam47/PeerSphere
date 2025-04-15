@@ -12,6 +12,12 @@ import QuestionPage from './pages/QuestionPage';
 import AskQuestionPage from './pages/AskQuestionPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import NotFoundPage from './pages/NotFoundPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import ResendVerificationPage from './pages/ResendVerificationPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import VerifyOTPPage from './pages/VerifyOTPPage';
+import VerifyResetOTPPage from './pages/VerifyResetOTPPage';
 
 function App() {
   return (
@@ -27,6 +33,12 @@ function App() {
               <Route path="/questions/:id" element={<QuestionPage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
+              <Route path="/verify-email" element={<VerifyEmailPage />} />
+              <Route path="/verify-otp" element={<VerifyOTPPage />} />
+              <Route path="/resend-verification" element={<ResendVerificationPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/verify-reset-otp" element={<VerifyResetOTPPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route 
                 path="/ask" 
                 element={

@@ -7,6 +7,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [needsVerification, setNeedsVerification] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
@@ -14,13 +15,19 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setNeedsVerification(false);
     setLoading(true);
 
     try {
       await signIn(email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in');
+      if (err.response?.data?.needsVerification) {
+        setNeedsVerification(true);
+        setError('Please verify your email before logging in');
+      } else {
+        setError(err.response?.data?.error || err.message || 'Failed to sign in');
+      }
     } finally {
       setLoading(false);
     }
@@ -37,7 +44,19 @@ const LoginPage: React.FC = () => {
         {error && (
           <div className="mb-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded-md flex items-start">
             <AlertCircle size={20} className="mr-2 flex-shrink-0 mt-0.5" />
-            <span>{error}</span>
+            <div>
+              <span>{error}</span>
+              {needsVerification && (
+                <div className="mt-2 flex flex-col space-y-2">
+                  <Link to={`/verify-otp?email=${encodeURIComponent(email)}`} className="text-blue-600 hover:underline">
+                    Verify with OTP
+                  </Link>
+                  <Link to={`/resend-verification?email=${encodeURIComponent(email)}`} className="text-blue-600 hover:underline">
+                    Resend verification email
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -67,9 +86,9 @@ const LoginPage: React.FC = () => {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-500">
+              <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
                 Forgot password?
-              </a>
+              </Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

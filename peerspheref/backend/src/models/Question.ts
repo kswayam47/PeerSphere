@@ -9,6 +9,7 @@ export interface IQuestion extends Document {
   updatedAt: Date;
   upvotes: mongoose.Types.ObjectId[];
   downvotes: mongoose.Types.ObjectId[];
+  answers: mongoose.Types.ObjectId[];
 }
 
 interface IQuestionModel extends Model<IQuestion> {
@@ -44,6 +45,10 @@ const questionSchema = new mongoose.Schema<IQuestion, IQuestionModel>({
   downvotes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  }],
+  answers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Answer'
   }]
 }, {
   timestamps: true

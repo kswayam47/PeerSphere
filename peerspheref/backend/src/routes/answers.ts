@@ -10,10 +10,38 @@ const router = express.Router();
 router.post('/', protect, async (req: any, res) => {
   try {
     const { content, questionId } = req.body;
+
+    // Validate required fields
+    if (!content || !questionId) {
+      return res.status(400).json({ 
+        message: 'Validation error',
+        errors: ['Content and questionId are required']
+      });
+    }
+
+    // Validate content length
+    if (content.length < 10) {
+      return res.status(400).json({ 
+        message: 'Validation error',
+        errors: ['Content must be at least 10 characters long']
+      });
+    }
+
+    // Check if question exists
+    const question = await Question.findById(questionId);
+    if (!question) {
+      return res.status(404).json({ 
+        message: 'Question not found'
+      });
+    }
+
+    // Create the answer
     const answer = await Answer.create({
       content,
       author: req.user._id,
-      question: questionId
+      question: questionId,
+      upvotes: [],
+      downvotes: []
     });
 
     // Update question's answers array
@@ -26,9 +54,20 @@ router.post('/', protect, async (req: any, res) => {
       $inc: { answersGiven: 1 }
     });
 
-    res.status(201).json(answer);
-  } catch (error) {
-    res.status(400).json({ message: 'Error creating answer' });
+    // Populate the author field before sending the response
+    const populatedAnswer = await Answer.findById(answer._id)
+      .populate('author', 'username');
+
+    res.status(201).json(populatedAnswer);
+  } catch (error: any) {
+    console.error('Error creating answer:', error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        message: 'Validation error',
+        errors: Object.values(error.errors).map((err: any) => err.message)
+      });
+    }
+    res.status(500).json({ message: 'Error creating answer' });
   }
 });
 
@@ -52,7 +91,16 @@ router.post('/:id/upvote', protect, async (req: any, res) => {
       return res.status(404).json({ message: 'Answer not found' });
     }
 
-    answer.upvotes += 1;
+    // Check if user has already upvoted
+    if (answer.upvotes.includes(req.user._id)) {
+      return res.status(400).json({ message: 'You have already upvoted this answer' });
+    }
+
+    // Remove from downvotes if exists
+    answer.downvotes = answer.downvotes.filter(id => id.toString() !== req.user._id.toString());
+    
+    // Add to upvotes
+    answer.upvotes.push(req.user._id);
     await answer.save();
 
     // Update author's reputation
@@ -74,7 +122,16 @@ router.post('/:id/downvote', protect, async (req: any, res) => {
       return res.status(404).json({ message: 'Answer not found' });
     }
 
-    answer.downvotes += 1;
+    // Check if user has already downvoted
+    if (answer.downvotes.includes(req.user._id)) {
+      return res.status(400).json({ message: 'You have already downvoted this answer' });
+    }
+
+    // Remove from upvotes if exists
+    answer.upvotes = answer.upvotes.filter(id => id.toString() !== req.user._id.toString());
+    
+    // Add to downvotes
+    answer.downvotes.push(req.user._id);
     await answer.save();
 
     // Update author's reputation

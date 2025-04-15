@@ -30,7 +30,21 @@ peerspheref/
 │   │   ├── App.tsx     # Main application component
 │   │   └── main.tsx    # Application entry point
 │   ├── public/         # Static assets
-│   └── config files    # Various configuration files
+│   ├── node_modules/   # Dependencies
+│   ├── package.json    # Project dependencies and scripts
+│   ├── package-lock.json # Dependency lock file
+│   ├── tsconfig.json   # TypeScript configuration
+│   ├── tsconfig.node.json # Node-specific TypeScript config
+│   ├── tsconfig.app.json # App-specific TypeScript config
+│   ├── vite.config.ts  # Vite bundler configuration
+│   ├── tailwind.config.js # Tailwind CSS configuration
+│   ├── postcss.config.js # PostCSS configuration
+│   ├── eslint.config.js # ESLint configuration
+│   ├── index.html      # HTML entry point
+│   ├── README.md       # Frontend documentation
+│   ├── .env           # Environment variables
+│   ├── .env.example   # Example environment variables
+│   └── .gitignore     # Git ignore rules
 └── backend/            # Backend Node.js/TypeScript application
     ├── src/           # Source code
     │   ├── controllers/ # Route controllers
@@ -43,7 +57,12 @@ peerspheref/
     │   │   └── db.ts
     │   ├── utils/      # Utility functions
     │   └── server.ts   # Application entry point
-    └── dist/          # Compiled JavaScript files
+    ├── node_modules/   # Dependencies
+    ├── package.json    # Project dependencies and scripts
+    ├── package-lock.json # Dependency lock file
+    ├── tsconfig.json   # TypeScript configuration
+    ├── README.md       # Backend documentation
+    └── .gitignore     # Git ignore rules
 ```
 
 ## Frontend (frontend-2/)
@@ -74,11 +93,14 @@ peerspheref/
 
 ### Configuration Files
 - `package.json` - Project dependencies and scripts
-- `tsconfig.json` - TypeScript configuration
+- `tsconfig.json` - Base TypeScript configuration
+- `tsconfig.node.json` - Node-specific TypeScript configuration
+- `tsconfig.app.json` - Application-specific TypeScript configuration
 - `vite.config.ts` - Vite bundler configuration
 - `tailwind.config.js` - Tailwind CSS configuration
 - `postcss.config.js` - PostCSS configuration
 - `eslint.config.js` - ESLint configuration
+- `index.html` - HTML entry point
 - `.env` - Environment variables (not tracked in git)
 - `.env.example` - Example environment variables
 
@@ -89,6 +111,10 @@ peerspheref/
 - Tailwind CSS
 - ESLint
 - React Router
+- Axios
+- React Query
+- React Hook Form
+- React Icons
 
 ## Backend (backend/)
 ### Key Components
@@ -113,7 +139,8 @@ peerspheref/
 ### Configuration Files
 - `package.json` - Project dependencies and scripts
 - `tsconfig.json` - TypeScript configuration
-- `nodemon.json` - Nodemon configuration for development
+- `.env` - Environment variables
+- `.env.example` - Example environment variables
 
 ### Key Dependencies
 - Node.js
@@ -121,6 +148,10 @@ peerspheref/
 - Express
 - CORS
 - dotenv
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
 - Nodemon (for development)
 
 ## API Endpoints
@@ -128,11 +159,23 @@ peerspheref/
 - POST `/api/auth/login` - User login
 - POST `/api/auth/register` - User registration
 - POST `/api/auth/logout` - User logout
+- GET `/api/auth/me` - Get current user
 
 ### Users
 - GET `/api/users/:id` - Get user profile
 - PUT `/api/users/:id` - Update user profile
 - GET `/api/users/leaderboard` - Get leaderboard data
+- GET `/api/users/search` - Search users
+
+### Questions
+- GET `/api/questions` - Get all questions
+- POST `/api/questions` - Create a question
+- GET `/api/questions/:id` - Get question details
+- PUT `/api/questions/:id` - Update question
+- DELETE `/api/questions/:id` - Delete question
+- POST `/api/questions/:id/answers` - Add answer
+- PUT `/api/questions/:id/answers/:answerId` - Update answer
+- DELETE `/api/questions/:id/answers/:answerId` - Delete answer
 
 ## Development Setup
 1. Frontend:
@@ -153,24 +196,55 @@ peerspheref/
 ### Frontend
 Required environment variables:
 - `VITE_API_URL` - Backend API URL (e.g., http://localhost:5000)
+- `VITE_APP_NAME` - Application name
+- `VITE_APP_VERSION` - Application version
 
 ### Backend
 Required environment variables:
 - `PORT` - Server port (default: 5000)
 - `MONGODB_URI` - MongoDB connection string
 - `JWT_SECRET` - JWT secret key for authentication
+- `NODE_ENV` - Environment (development/production)
+- `CORS_ORIGIN` - Allowed CORS origins
 
 ## Testing
-[Testing information will be added here]
+### Frontend Testing
+- Jest for unit testing
+- React Testing Library for component testing
+- Cypress for E2E testing
+
+### Backend Testing
+- Jest for unit testing
+- Supertest for API testing
+- MongoDB Memory Server for database testing
 
 ## Deployment
-[Deployment information will be added here]
+### Frontend Deployment
+- Vercel for production deployment
+- GitHub Actions for CI/CD
+- Environment-specific builds
+
+### Backend Deployment
+- Heroku for production deployment
+- GitHub Actions for CI/CD
+- PM2 for process management
+- MongoDB Atlas for database hosting
 
 ## Contributing
-[Contributing guidelines will be added here]
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+### Code Style
+- Follow ESLint rules
+- Use TypeScript for type safety
+- Write meaningful commit messages
+- Include tests for new features
 
 ## License
-[License information will be added here]
+MIT License - See LICENSE file for details
 
 ---
-*Last updated: April 13, 2024* 
+*Last updated: April 15, 2024* 

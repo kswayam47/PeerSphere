@@ -335,7 +335,7 @@ const QuestionPage = () => {
   if (error) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+        <div className="bg-red-100 dark:bg-red-900 dark:bg-opacity-20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded relative transition-colors duration-200">
           {error}
         </div>
       </div>
@@ -345,7 +345,7 @@ const QuestionPage = () => {
   if (!question) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative">
+        <div className="bg-yellow-100 dark:bg-yellow-900 dark:bg-opacity-20 border border-yellow-400 dark:border-yellow-800 text-yellow-700 dark:text-yellow-300 px-4 py-3 rounded relative transition-colors duration-200">
           Question not found
         </div>
       </div>
@@ -354,13 +354,13 @@ const QuestionPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+      <div className="bg-white dark:bg-blue-50 dark:bg-opacity-10 rounded-lg shadow-md p-6 mb-6 transition-colors duration-200">
         <div className="flex">
           <div className="flex flex-col items-center mr-4">
             <button 
               onClick={handleUpvoteQuestion}
-              className={`text-gray-500 hover:text-green-500 ${
-                user && question?.upvotes.includes(user._id) ? 'text-green-500' : ''
+              className={`text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 ${
+                user && question?.upvotes.includes(user._id) ? 'text-green-500 dark:text-green-400' : ''
               }`}
               disabled={!user}
             >
@@ -368,13 +368,13 @@ const QuestionPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
             </button>
-            <span className="text-sm font-bold my-1">
+            <span className="text-sm font-bold my-1 text-gray-800 dark:text-gray-100">
               {question?.upvotes.length - question?.downvotes.length}
             </span>
             <button 
               onClick={handleDownvoteQuestion}
-              className={`text-gray-500 hover:text-red-500 ${
-                user && question?.downvotes.includes(user._id) ? 'text-red-500' : ''
+              className={`text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 ${
+                user && question?.downvotes.includes(user._id) ? 'text-red-500 dark:text-red-400' : ''
               }`}
               disabled={!user}
             >
@@ -384,9 +384,9 @@ const QuestionPage = () => {
             </button>
           </div>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-4">{question?.title}</h1>
-            <p className="text-gray-700 mb-4">{question?.content}</p>
-            <div className="flex items-center text-sm text-gray-500">
+            <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{question?.title}</h1>
+            <p className="text-gray-700 dark:text-gray-200 mb-4">{question?.content}</p>
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-300">
               <span>Asked by {question?.author.username}</span>
               <span className="mx-2">•</span>
               <span>{new Date(question?.createdAt).toLocaleDateString()}</span>
@@ -396,18 +396,18 @@ const QuestionPage = () => {
       </div>
 
       <div className="mb-6">
-        <h2 className="text-xl font-bold mb-4">{question.answers.length} Answers</h2>
+        <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{question.answers.length} Answers</h2>
         {question.answers.length === 0 ? (
-          <p className="text-gray-600">No answers yet. Be the first to answer!</p>
+          <p className="text-gray-600 dark:text-gray-300">No answers yet. Be the first to answer!</p>
         ) : (
           question.answers.map((answer) => (
-            <div key={answer._id} className="bg-white rounded-lg shadow-md p-6 mb-4">
+            <div key={answer._id} className="bg-white dark:bg-blue-50 dark:bg-opacity-10 rounded-lg shadow-md p-6 mb-4 transition-colors duration-200">
               <div className="flex">
                 <div className="flex flex-col items-center mr-4">
                   <button 
                     onClick={() => handleUpvoteAnswer(answer._id)}
-                    className={`text-gray-500 hover:text-green-500 ${
-                      user && answer.upvotes.includes(user._id) ? 'text-green-500' : ''
+                    className={`text-gray-500 dark:text-gray-400 hover:text-green-500 dark:hover:text-green-400 ${
+                      user && answer.upvotes.includes(user._id) ? 'text-green-500 dark:text-green-400' : ''
                     }`}
                     disabled={!user}
                   >
@@ -415,13 +415,13 @@ const QuestionPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                     </svg>
                   </button>
-                  <span className="text-sm font-bold my-1">
+                  <span className="text-sm font-bold my-1 text-gray-800 dark:text-gray-100">
                     {answer.upvotes.length - answer.downvotes.length}
                   </span>
                   <button 
                     onClick={() => handleDownvoteAnswer(answer._id)}
-                    className={`text-gray-500 hover:text-red-500 ${
-                      user && answer.downvotes.includes(user._id) ? 'text-red-500' : ''
+                    className={`text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 ${
+                      user && answer.downvotes.includes(user._id) ? 'text-red-500 dark:text-red-400' : ''
                     }`}
                     disabled={!user}
                   >
@@ -431,9 +431,9 @@ const QuestionPage = () => {
                   </button>
                 </div>
                 <div className="flex-1">
-                  <p className="text-gray-700 mb-4">{answer.content}</p>
+                  <p className="text-gray-700 dark:text-gray-200 mb-4">{answer.content}</p>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-300">
                       <span>Answered by {answer.author.username}</span>
                       <span className="mx-2">•</span>
                       <span>{new Date(answer.createdAt).toLocaleDateString()}</span>
@@ -441,13 +441,13 @@ const QuestionPage = () => {
                     {user && question.author._id === user._id && !answer.isAccepted && (
                       <button 
                         onClick={() => handleAcceptAnswer(answer._id)}
-                        className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs"
+                        className="bg-green-100 dark:bg-green-900 dark:bg-opacity-30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-xs hover:bg-green-200 dark:hover:bg-green-800"
                       >
                         Accept Answer
                       </button>
                     )}
                     {answer.isAccepted && (
-                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
+                      <span className="bg-green-100 dark:bg-green-900 dark:bg-opacity-30 text-green-800 dark:text-green-300 px-3 py-1 rounded-full text-xs flex items-center">
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -457,10 +457,10 @@ const QuestionPage = () => {
                   </div>
                   
                   {/* Comments section */}
-                  <div className="mt-4 border-t pt-3">
+                  <div className="mt-4 border-t dark:border-gray-700 pt-3">
                     <button 
                       onClick={() => toggleComments(answer._id)}
-                      className="text-sm text-blue-600 hover:text-blue-800"
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                     >
                       {answer.comments && answer.comments.length > 0 
                         ? `Show ${answer.comments.length} comment${answer.comments.length > 1 ? 's' : ''}` 
@@ -474,10 +474,10 @@ const QuestionPage = () => {
                             {answer.comments.map(comment => (
                               <div key={comment._id} className="mb-2 text-sm">
                                 <div className="flex items-start">
-                                  <span className="font-semibold mr-2">{comment.author.username}:</span>
-                                  <span className="text-gray-700">{comment.content}</span>
+                                  <span className="font-semibold mr-2 text-gray-800 dark:text-gray-100">{comment.author.username}:</span>
+                                  <span className="text-gray-700 dark:text-gray-200">{comment.content}</span>
                                 </div>
-                                <div className="text-xs text-gray-500 ml-0">
+                                <div className="text-xs text-gray-500 dark:text-gray-300 ml-0">
                                   {new Date(comment.createdAt).toLocaleDateString()}
                                 </div>
                               </div>
@@ -495,11 +495,11 @@ const QuestionPage = () => {
                                 [answer._id]: e.target.value
                               }))}
                               placeholder="Add a comment..."
-                              className="flex-1 border rounded-l-md px-3 py-1 text-sm"
+                              className="flex-1 border dark:border-gray-600 rounded-l-md px-3 py-1 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                             />
                             <button
                               onClick={() => handleSubmitComment(answer._id)}
-                              className="bg-blue-500 text-white px-3 py-1 rounded-r-md text-sm"
+                              className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-3 py-1 rounded-r-md text-sm"
                             >
                               Add
                             </button>
@@ -516,11 +516,11 @@ const QuestionPage = () => {
       </div>
 
       {user && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Your Answer</h2>
+        <div className="bg-white dark:bg-blue-50 dark:bg-opacity-10 rounded-lg shadow-md p-6 transition-colors duration-200">
+          <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Your Answer</h2>
           <form onSubmit={handleSubmitAnswer}>
             <textarea
-              className="w-full p-3 border rounded-md mb-4"
+              className="w-full p-3 border dark:border-gray-600 rounded-md mb-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               rows={6}
               value={newAnswer}
               onChange={(e) => setNewAnswer(e.target.value)}
@@ -529,7 +529,7 @@ const QuestionPage = () => {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200"
             >
               Post Answer
             </button>

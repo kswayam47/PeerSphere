@@ -5,6 +5,33 @@ import User from '../models/User';
 
 const router = express.Router();
 
+// Search questions
+router.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+    
+    if (!query) {
+      return res.status(400).json({ message: 'Search query is required' });
+    }
+
+    // Search in title, content and tags
+    const questions = await Question.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { content: { $regex: query, $options: 'i' } },
+        { tags: { $in: [new RegExp(query as string, 'i')] } }
+      ]
+    })
+      .populate('author', 'username')
+      .sort({ createdAt: -1 });
+
+    res.json(questions);
+  } catch (error) {
+    console.error('Error searching questions:', error);
+    res.status(500).json({ message: 'Error searching questions' });
+  }
+});
+
 // Get all questions
 router.get('/', async (req, res) => {
   try {

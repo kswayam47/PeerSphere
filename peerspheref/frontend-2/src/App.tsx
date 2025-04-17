@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -23,35 +24,37 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="flex flex-col min-h-screen bg-gray-50">
-          <Navbar />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/questions/:id" element={<QuestionPage />} />
-              <Route path="/leaderboard" element={<LeaderboardPage />} />
-              <Route path="/profile/:id" element={<ProfilePage />} />
-              <Route path="/verify-email" element={<VerifyEmailPage />} />
-              <Route path="/verify-otp" element={<VerifyOTPPage />} />
-              <Route path="/resend-verification" element={<ResendVerificationPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/verify-reset-otp" element={<VerifyResetOTPPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
-              <Route 
-                path="/ask" 
-                element={
-                  <ProtectedRoute>
-                    <AskQuestionPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <ThemeProvider>
+          <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+            <Navbar />
+            <main className="flex-grow container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/questions/:id" element={<QuestionPage />} />
+                <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/profile/:id" element={<ProfilePage />} />
+                <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/verify-otp" element={<VerifyOTPPage />} />
+                <Route path="/resend-verification" element={<ResendVerificationPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/verify-reset-otp" element={<VerifyResetOTPPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route 
+                  path="/ask" 
+                  element={
+                    <ProtectedRoute>
+                      <AskQuestionPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );
